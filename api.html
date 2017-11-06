@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>HugeCoin</title>
+  </head>
+  <body>
+    <h3>Buy Rate:</h3>
+    <p>1 bitcoin = <span id='buy'></span> </p>
+
+    <h3>Sell Rate</h3>
+    <p>1 bitcoin = <span id='sell'></span> </p>
+  </body>
+
+  <script
+    src="https://code.jquery.com/jquery-3.2.1.js"
+    integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.0/axios.min.js"></script>
+    <script>
+      var url = 'https://blockchain.info/ticker';
+      var old_result;
+      getData(url);
+      setInterval(function (){
+        getData(url);
+    }, 5000);
+
+    function getData(url){
+      axios.get(url)
+        .then(function (response) {
+
+          var result = response.data.INR.last;
+          var symbol = response.data.INR.symbol;
+          if(result > old_result){
+            $('#buy').css('color', 'blue');
+
+          }
+          else{
+            $('#buy').css('color', 'red');
+
+          }
+          old_result = result;
+        console.log(result);
+          var base = result + 33000;
+          $('#buy').html(base + 5500 + ' ' + symbol);
+          $('#sell').html(base - 4600 + ' ' + symbol);
+
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    }
+
+
+    </script>
+    <style media="screen">
+      p{
+        font-size: 30px;
+      }
+    </style>
+</html>
